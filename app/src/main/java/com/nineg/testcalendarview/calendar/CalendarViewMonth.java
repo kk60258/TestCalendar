@@ -41,15 +41,13 @@ public class CalendarViewMonth extends ViewGroup {
         int widthOfDayView = 68;
         int heightOfDayView = 62;
 
-        Calendar calendar = Calendar.getInstance();
-
         //raw y = 0
         for(int x = 0; x < mNumberOfX; ++x) {
             CalendarViewDay cdv = new CalendarViewDay(context);
             LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             lp.width = widthOfHeader;
             lp.height = heightOfHeader;
-            cdv.setText(CalendarUtils.getDayOfWeekHeader(calendar, x + Calendar.SUNDAY));
+            cdv.setText(CalendarUtils.getDayOfWeekHeader(x + Calendar.SUNDAY));
             addView(cdv, lp);
         }
 
@@ -70,18 +68,20 @@ public class CalendarViewMonth extends ViewGroup {
         mHeightOfDayView = heightOfDayView;
     }
 
+    private CalendarInfo mCalendarInfo;
     private int mCurrentMonth;
     private int mCurrentYear;
 
     private Calendar mMinDate;
     private Calendar mMaxDate;
     //@params month must be
-    public void setup(int year, int month) {
-        mCurrentYear = year;
-        mCurrentMonth = month;
+    public void setup(CalendarInfo calendarInfo) {
+        mCalendarInfo = calendarInfo;
+        mCurrentYear = calendarInfo.year;
+        mCurrentMonth = calendarInfo.month;
 
         java.util.Calendar calendar = java.util.Calendar.getInstance();
-        calendar.set(year, month, 1);
+        calendar.set(mCurrentYear, mCurrentMonth, 1);
         int firstWeekDay = CalendarUtils.getDayOfWeek(calendar); // 1 for Sunday
         int daysInLastMonth = (firstWeekDay - Calendar.SUNDAY);
         CalendarUtils.addDays(calendar, -1 * daysInLastMonth);
@@ -93,7 +93,7 @@ public class CalendarViewMonth extends ViewGroup {
                 int index = x + y * mNumberOfX;
                 CalendarViewDay cdv = (CalendarViewDay) getChildAt(index);
                 CalendarInfoDay infoDay = new CalendarInfoDay(calendar);
-                infoDay.mOutOfMonthRange = CalendarUtils.getMonth(calendar) != month;
+                infoDay.mOutOfMonthRange = CalendarUtils.getMonth(calendar) != mCurrentMonth;
                 cdv.setCalendarInfoDay(infoDay);
                 CalendarUtils.addDays(calendar, 1);
             }
@@ -103,6 +103,9 @@ public class CalendarViewMonth extends ViewGroup {
     }
 
 
+    public CalendarInfo getInfo() {
+        return mCalendarInfo;
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

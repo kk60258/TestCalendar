@@ -25,6 +25,17 @@ import static java.util.Calendar.YEAR;
  */
 
 public class CalendarUtils {
+
+    static Calendar sTempCalendar = Calendar.getInstance();
+
+    public static void setYear(Calendar calendar, int year) {
+        calendar.set(YEAR, year);
+    }
+
+    public static void setMonth(Calendar calendar, int month) {
+        calendar.set(MONTH, month);
+    }
+
     public static int getYear(Calendar calendar) {
         return calendar.get(YEAR);
     }
@@ -43,6 +54,14 @@ public class CalendarUtils {
 
     public static void addDays(Calendar calendar, int numberOfDays) {
         calendar.add(Calendar.DATE, numberOfDays);
+    }
+
+    public static void addMonths(Calendar calendar, int numberOfMonths) {
+        calendar.add(Calendar.MONTH, numberOfMonths);
+    }
+
+    public static void addYears(Calendar calendar, int numberOfYears) {
+        calendar.add(Calendar.YEAR, numberOfYears);
     }
 
     static int getMonthDaysCount(int year, int month) {
@@ -72,9 +91,14 @@ public class CalendarUtils {
         return 0;
     }
 
-    public static String getDayOfWeekHeader(Calendar calendar, int dayOfWeek) {
-        calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
-        return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault());
+    public static String getDayOfWeekHeader(int dayOfWeek) {
+        sTempCalendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+        return sTempCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault());
+    }
+
+    public static String getMonthHeader(int dayOfWeek) {
+        sTempCalendar.set(Calendar.MONTH, dayOfWeek);
+        return sTempCalendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault());
     }
 
 //    static String getDayOfWeekHeader(int i) {

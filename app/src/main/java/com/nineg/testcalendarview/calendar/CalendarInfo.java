@@ -25,4 +25,10 @@ public class CalendarInfo {
         this.month = month;
         this.day = day;
     }
+
+    public Calendar toCalendar() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        return calendar;
+    }
 }
